@@ -599,8 +599,13 @@ def main():
             more_pulls = False
         page += 1
 
-    pulls = [ PullReq(cfg, gh, pull) for pull in
-              all_pulls ]
+    pulls = []
+    for pull in all_pulls:
+        p = None
+        try:
+            pulls.append(PullReq(cfg, gh, pull))
+        except:
+            logging.warn("unexpected data in PR #%d; skipping!" % pull["number"])
 
     #
     # We are reconstructing the relationship between three tree-states on the
